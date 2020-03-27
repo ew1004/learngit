@@ -4,3 +4,5 @@ git tag <tag-name>
 git tag -a <tag-name> -m 'abcd...'
 ####查看标签
 git tag
+####保护工作现场
+git stash
