@@ -4,3 +4,5 @@ git checkout -b dev  ==  git branch dev + git checkout dev
 git checkout dev  ==  git switch dev
 ####合并分支
 git merge dev  //将dev合并到当前分支上
+####删除分支
+git branch -d dev
