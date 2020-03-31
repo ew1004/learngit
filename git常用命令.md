@@ -1,3 +1,9 @@
+#### 本地库初始化  
+git init  
+#### 查看当前库状态  
+git status  
+#### 查看不同  
+git diff filename
 #### 新建分支  
 git checkout -b dev  ==  git branch dev + git checkout dev  
 #### 切换分支  
