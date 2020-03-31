@@ -20,3 +20,9 @@ git tag -a <tag-name> -m 'abcd...'
 git tag  
 #### 保护工作现场  
 git stash
+#### 查看远程库信息  
+git remote -v  
+#### 关联远程库  
+git remote add <name> git@github.com:ew1004/learngit.git  
+git push -u <name> master //第一次添加时，加上-u参数  
+git push <name> master //后续推送即可简化命令  
