@@ -8,6 +8,8 @@ git diff filename
 git checkout -b dev  ==  git branch dev + git checkout dev  
 #### 切换分支  
 git checkout dev  ==  git switch dev  
+#### 查看分支 
+git branch 
 #### 合并分支  
 git merge dev  //将dev合并到当前分支上  
 #### 删除分支  
