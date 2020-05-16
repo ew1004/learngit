@@ -76,9 +76,6 @@ a.write()    #写入
     a.pop(key)
 
 ####解包
-    （a,b,c）=(1,2,3)
-     [1,b,c）=(1,2,3]
-
     {'key1':'value1','key2':'value2'}
     key1,key2=s    #默认对键解包   
     key1,key2=s.items()    #默认对键值对解包
@@ -119,10 +116,11 @@ a.write()    #写入
 ####类：类名首字母大写，驼峰原则
     class Abc：
 	w=wang   #类属性
-        def __init__(self,a,b)    #__init__()构造方法
+    def __init__(self,a,b)    #__init__()构造方法
         self.a=a     #实例属性
         self.b=b
-        def ab():    #实例方法
+    def ab(self):    #实例方法
+    	pass
 	@classmethod    #类方法首行，类方法引用实例属性，实例方法报错
 	def abc(cls ,a,b,c)    #cls类对象本身，必须首个
 	@staticmethod    #静态方法，与类对象无关的方法，同普通函数，只是放到了类的名字空间里
@@ -274,6 +272,3 @@ import os         #print(os.getcwd())  #获得当前目录
 ####pygame, 见坦克大战
 		
 ####pyinstaller -F -w --icon=img.jpg main.py 封装成exe
-
-
-
