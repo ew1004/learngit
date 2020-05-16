@@ -1,0 +1,81 @@
+1.python 2.0 和 3.0 问题
+	py3
+	4/2=2.0
+	py2
+	4/2=2
+	5/2=2
+2.windows下更换pip源
+	1、WIN+R，然后输入%APPDATA%，会定位到一个新的目录下，我的是C:\Users\Administrator\AppData\Roaming
+	2、在该目录下新建pip文件夹
+	3、然后到pip文件夹里面去新建个pip.ini文件
+	4、然后打开该文件，将以下内容写入进去
+	[global]
+	timeout = 6000
+	index-url = http://pypi.douban.com/simple
+	trusted-host = pypi.douban.com
+	5、然后保存
+	附国内镜像源：
+	  阿里云 http://mirrors.aliyun.com/pypi/simple/
+	  中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple/
+	  豆瓣(douban) http://pypi.douban.com/simple/
+	  清华大学 https://pypi.tuna.tsinghua.edu.cn/simple/
+	  中国科学技术大学 http://pypi.mirrors.ustc.edu.cn/simple/
+3.python 多版本共存，注意更改系统环境变量，同时排名靠前优先还使用，可改名字使用后面的版本
+4.anaconda:安装完后cmd：conda --version 查看是否成功
+	conda create --name <your_env_name> python=3.6
+	conda env list 查看环境列表
+	activate <env_name> 激活环境
+	deactivate 退出环境
+
+	创建一个新环境想克隆一部分旧的环境
+	conda create -n your_env_name --clone oldname
+	删除某个环境
+	conda remove -n your_env_name --all
+	导出环境配置（非常有用，比如你想帮朋友安装和你一模一样的环境，你可以直接导出一个配置文件给他，就能免除很多人力安装调试)
+	conda env export > environment.yml
+	将会在当前目录生成一个environment.yml,你把它交给小伙伴或拷到另一台机器，小伙伴只需要对这个文件执行命令  
+	conda env create -f environment.yml
+	就可以生成和你原来一模一样的环境啦
+	conda list 列举当前环境下的所有包
+	conda list -n packagename 列举某个特定名称包
+	conda install packagename 为当前环境安装某包
+	conda install -n envname packagename 为某环境安装某包
+	conda search packagename 搜索某包
+	conda updata packagename 更新当前环境某包
+	conda update -n envname packagename 更新某特定环境某包
+	conda remove packagename 删除当前环境某包
+	conda remove -n envname packagename 删除某环境环境某包
+	conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
+	conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+	conda config --set show_channel_urls yes 在包后面显示来源
+5.在使用tensor flow时，控制台报错如下：the TensorFlow library wasn't compiled to use SSE4.2 instructions, but these……
+	TensorFlow的日志级别分为以下三种：
+	TF_CPP_MIN_LOG_LEVEL = 1 //默认设置，为显示所有信息
+	TF_CPP_MIN_LOG_LEVEL = 2 //只显示error和warning信息
+	TF_CPP_MIN_LOG_LEVEL = 3 //只显示error信息
+	所以，当TensorFlow出现警告信息，又不想让警告信息显示时，可进行如下设置：
+	python环境下
+	通过在python文件中添加如下两行代码，设置TensorFlow日志输出级别
+	import os
+	os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"
+6.tensorboard --logdir=filepath
+	filepath 事件文件所在路径，路经必须用//
+	例如：tensorboard --logdir=f://python//tensorflow//test
+7.git push -u orifin master 报错如下：
+	第一句报错：
+	fatal: remote origin already exists.
+	远程起源已经存在。
+	第二句报错：
+	git@github.com: Permission denied (publickey).
+	fatal: Could not read from remote repository.
+	git@github.com：权限被拒绝（publickey）。
+	致命：无法从远程存储库读取。
+	第三句报错：
+	Please make sure you have the correct access rights
+	and the repository exists.
+	请确保您拥有正确的访问权限
+	并且存储库存在。
+	本地库目录下，git bash中输入：
+	ssh-keygen -t rsa -C "18331991616@163.com" 后回车几次
+	直到出现：The key's randomart image is:......
+	cat cat ~/.ssh/id_rsa.pub 即得到ssh，到GitHub设置ssh中新建即可

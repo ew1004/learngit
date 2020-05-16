@@ -1,0 +1,366 @@
+超级用户：root
+密码：7603998
+本地用户：wyj
+密码：wang7603998
+切换到用户wyj：su - wyj
+切回root：su -
+重启reboot
+关机poweroff
+桥接模式vi /etc/sysconfig/network-scipts/ifcfg-eth0修改中的onboot=yes
+网络重启service network restart
+#########################
+$ 普通用户，# root用户，超级管理员
+命令     选项       参数
+command [-options] [arguments]
+	- 引导段格式选项（单个字符） 如-l
+	-- 引导长格式选项（多个字符）如--help
+	多个段格式选项写一起只能用-，如-al
+命令帮助文档
+	外部命令 help cd
+	内部命令 man ls
+##########################
+ls 
+    -l：长格式
+    文件类型
+    	d：目录
+    	b：字节
+    	c：字符
+    	-：普通文件
+    	l：链接文件（symbolic link file）
+    	p：命令管道文件（pipe）
+    	a：套接字文件（socke）
+    文件权限
+    	9位，每3位一组，3组权限u，g，o；每一组：rwx-
+    	文件硬链接的次数
+    	文件的属主（owner）
+    	文件的属组（group）
+    	文件大小，单位字节
+    	时间戳（timestamp），最后一次被修改的时间
+    		访问：access，访问时间
+    		修改：modify，文件内容发生了改变
+    		改变：change，文件元数据发生改变
+    -h：做单位转换
+    -a：显示以 . 开头的隐藏文件
+    	. 表示当前目录
+    	.. 表示父目录
+    -d：显示目录自身属性
+    -r：逆序显示
+    -R：递归显示
+cd：切换目录（change directoy）
+rm：删除文件
+	-i 删除前确认
+	-f 删除前不确认
+	-r 递归删除
+mkdir：创建空目录
+mv：移动文件
+tree：查看目录树
+touch：
+	文件不存在，则创建新的
+	文件存在，则文件所有时间更新
+stat：查看文件信息
+file：查看文件类型
+##################################################
+文件系统：根目录系统
+	/boot：系统启动相关文件
+	/home；用户家
+	/lib：库文件
+	/prod：伪文件系统，内核映射文件
+	/media：挂载点目录，移动设备
+	/mnt：挂载点目录，额外的临时文件系统
+	/opt：可选目录，第三方程序的安装目录
+	/bin：可执行文件，用户命令
+路径：
+	绝对路径：以根目录为起点到目标的路径
+	相对路径：以当前目录为起点到目标的路径
+元数据：
+	除了文件内容之外的数据，如权限，时间等。
+#################################################
+vi：
+	输入模式：
+		i：光标位插入
+		I：行首插入
+		a：光标后插入
+		A：行尾插入
+		o：光标下面插入一行
+		O：光标上面插入一行
+	命令模式：
+		x：删除光标处字符，前加数字n，向右删除n个
+		X：删除光标前面的字符，前加数字n，向左删除n个
+		dd：删除光标所在的整行，前加数字n，删除当前行及其后的n-1行
+		dw：删除一个单词，前加数字n，删除n个
+		D 或d$：删除从光标所在位置到行尾的内容
+		d0：删除从光标前一个字符到行首的内容
+		d(：删除到上一句开始的所有字符
+		d)：删除到下一句开始的所有字符
+		d{：删除到上一段开始的所有字符
+		d}：删除到下一段开始的所有字符
+		d<CR>：删除包括当前行在内的两行字符（<CR>表示回车）
+
+		yy：复制光标所在的整行，前加数字n，复制当前行及其后的n-1行
+		yw：复制一个单词，前加数字n，复制n个单词
+		Y 或 y$：复制光标所在位置到行尾的内容
+		y0：复制光标前一个字符到行首的内容
+		y(：复制到上一句开始的所有字符
+		y)：复制到下一句开始的所有字符
+		y{：复制到上一段开始的所有字符
+		y}：复制到下一段开始的所有字符
+		y<CR>：复制包括当前行在内的两行字符（<CR>表示回车）
+
+		p：粘贴命令，粘贴当前缓冲区中的内容
+			vi编辑器有9个寄存器，可以存放最近9个被删除的内容，这些内容可恢复
+		v：选择光标移动区块内容
+		V：选择整行
+		u：撤销上一次操作
+		U：撤销所有操作
+		ctrl+r：取消最近一次撤销
+		.：重复上一次操作
+		r：将光标所指字符替换为提供的字符，前加数字n，替换当前字符开始n个字符
+		R：此模式下，每个输入的字符都换替换光标下的字符，Esc 结束该模式
+
+	底线命令模式：
+		:q：无修改退出
+		:q！：有修改，不保存，强制退出
+		:wq：保存，退出
+		:w filename：另存为filename
+			若filename已经存在，则提示 File exists(use! to override)
+		:w! newname：保存为newname，存在覆盖
+		:x：若修改过，则保存，否则直接退出，不保存
+	移动命令：
+	滚屏和分页命令：
+		Ctrl+u：向前（文件头方向）翻滚半屏
+		Ctrl+d：向后（文件尾方向）翻滚半屏
+		Ctrl+f：向后（文件尾方向）翻滚一屏
+		Ctrl+b：向前（文件头方向）翻滚一屏
+	检索命令：
+		/string：从光标处向后寻找string
+		?string：从光标处向前寻找string
+		n：重复上一条检索命令
+		N：重复上一条检索命令，但方向改变
+		g/string：检索string，并使光标停在第一个检索到的string的行首
+	替换命令：
+		命令格式：[range]s/s1/s2[option]
+		range 表示检索范围，省略时表示当前行
+			例：1，10 表示第1行到第10行
+				% 表示整个文件，同1，$
+				.，$从当前行到文件尾
+		s 为替换命令
+		s1 要被替换的串，s2为替换的串
+			可用\<word，匹配以word开始的单词的word部分
+		option 表示选项
+			/g 表示全局文件进行替换
+			/c 表示每次替换之前需要确认
+			省略时，表示对每行第一个匹配串替换
+	窗口的切分：
+		:split：split可简写sp，窗口切分为上下两部分，上半为新打开的文件，下半为原来的文件
+		多窗口之间切换：
+			Ctrl+w，然后j：移动光标到下面的窗口
+			Ctrl+w，然后k：移动光标到下面的窗口
+			Ctrl+w，然后q：关闭当前窗口
+			Ctrl+w，然后w：移动光标到另一个窗口
+	行号设置：
+		:set nu(nonu) 显示行号，或不显示行号
+	显示设置：
+		:set hlsearch(nohlsearch) 设定搜寻字符串反白显示，或不反白显示
+	语法缩进：
+		:set autoindent 程序语法自动缩进
+	文件存储：
+		:set backup(nobackup) 自动存储备份文件，或不备份
+	显示选项：
+		:set all 显示所有选项
+	语法高亮：
+		:syntax on(off) 程序语法高亮，或不高亮
+	大小写区分：
+		:set ignorecase(noignorecase)
+###############################################
+文件查看：
+	cat：查看小文件
+	tac：倒看
+	more：一页一页看
+	less：一行一行看
+	head：查看开头行
+	tail：查看最后行
+		-n 查看最后n行
+		-f filename 查看文件尾部，不退出，等待显示后续追加至此文件的新内容
+字符串切割：
+	cut：-d：制定字段分割，默认空格
+		 -f：指定要显示的字段
+		 	-f1
+		 	-f1，3
+		 	-f1-3
+文件统计：
+	wc：l，w，c，L
+文件编辑：
+	sed：
+	awk：awk '{print | printf}'
+引号：
+	反引号：``，命令替换
+	单引号：''，字符串，强引用不做，变量替换
+	双引号：""，变量替换，弱引用，做变量替换
+管道：
+	将前一个命令的输出，作为下一个命令的输入
+用户管理：
+    useradd name
+    userdel name
+    passwd name 
+    cat /etc/passwd  查看用户
+进程：
+	ps aux
+	netstat -ntp
+###############################################
+脚本执行：
+	source filename：也可简写成 . filename 直接运行文件，不创建子shell，source不是直接执行一个文件，而是从文件读取命令行进行执行。注意空格，强制执行脚本文件中全部命令，忽略文件权限
+	/bin/bash filename：直接运行bash，将脚本文件名作为参数传给bash，须用bash的绝对路径
+	chmod +x filename：添加执行权限，须为执行文件的目录
+	chmod u+w filename:用户权限添加
+################################################
+软件安装：
+	软件包：bin文件.bin（所有linux发行版）
+		    rpm包，yum（redhat系列）
+		    源码压缩包 （所有linux发行版）
+	步骤：
+		rpm -i package.rpm
+			-h 以#显示进度，每个#表示2%
+			-v 显示详细过程
+			-vv 显示更详细过程
+	源码安装：
+		1：下载    .tar.gz
+		2：查看源码    tar 解压
+		3：准备编译环境    c++或其他环境
+		4：检查依赖，预编译    yum依赖的库，configure | cmake
+		5：编译    make
+		6：安装    makeinstall
+######################################################
+shell编程
+变量：
+    环境变量：跨bash
+    本地变量：
+    特殊变量：
+            $?：上一个命令的执行状态返回值，0表示没有错误或者!0表示有错误
+            $#：传递到脚本的参数个数
+            $*：传递到脚本的参数
+            $$：脚本运行时当前进程的id号，常作临时变量的后缀
+            $!：后台运行的最后一个进程id号
+            $@：与$#相同，使用时加引号，并在引号中返回参数个数
+输出重定向：
+    >覆盖重定向
+    >>追加重定向
+    2>错误覆盖重定向
+    2>>错误追加重定向
+    &>所有重定向
+ls -l /home/ >/dev/null  数据黑洞，输进出拉不出来，一些不想要得东西可以丢进去
+输入重定向：箭头反向      
+撤销变量：upset
+查看shell中的变量：
+    printenv
+    env
+    export
+脚本练习：
+	cd /home/
+	mkdir shell
+	cd shell/
+	vi test1.sh  /有无后缀名一样，只是告诉便于他人识别
+	#！/bin/bash  /顶行声明解释器，魔数
+	U="user1"
+	useradd $U 
+	echo $U | passwd --stdin $U &>/dev/null
+	echon "user add success."
+脚本练习：
+#！/bin/bash
+U='user1'
+id $U &>/dev/null && userdel -rf $U || echo "user $U does not exist"
+逻辑运算：linux中的命令执行状态：0为真，其他为假
+	&&：
+		第一个条件为假时，第二个条件不再判断，最终结果已有
+		第一个条件为真时，第二个条件必须判断
+	||：或
+	！：非
+条件运算：
+	if 条件；then
+	语句
+	elif 条件；then
+	语句
+	else 
+	语句
+	fi
+脚本练习：
+	#！/bin/bash
+	C= `grep ^$1 /etc/passwd | wc -l`
+	if [ $C -eq 1 ];then
+		userdel -r $1
+		echo "User $1 is deleted"
+	else
+		echo "User does not exist"
+	fi
+脚本练习：
+	#！/bin/bash
+
+	if [ $# -ne 3 ]
+		echo "args is error."
+		exit 1
+	fi
+	TMP_NO=
+	[ $1 -lt $2 ] && TMP_NO=$1 || TMP_NO=$2
+	[ $TMP_NO -lt $3 ] && TMP_NO=$3
+	echo "The min number is $TMP_NO"
+检查脚本：
+	bash -n name.sh  //检查脚本语法错误
+	bash -x nmae.sh  //debug脚本
+算数运算：
+	1.let 算数表达式
+		let C=$A+$B
+	2.$[算数表达式]
+		C = $A+$B
+	3.$((算数表达式))
+		C = (($A+$B))
+	4.expr 算数表达式，注意：表达式中个操作数及运算符间有空格，且要使用命令引用``
+		C = `expr $A + $B`
+/proc/cpuinfo  cup信息
+/etc/shadow  用户时间信息
+循环：
+	for 变量 in 列表；do
+		语句
+	done
+列表：
+	｛1..100｝  里变不能有变量
+	seq [起始数] [跨度数] [终止数]
+	ls /etc  文件列表
+脚本练习：
+#！/bin/bash
+J=0
+C=`wc -l /etc/passwd | cut -d' ' -f1`
+for I in `seq $C`;do
+	U=`head -$I /etc/passwd | tail -1 | cut -d: -f1`
+	login=`head -$I /etc/passwd | tail -1 | cut -d: -f7`
+	if [ $login == '/bin/bash' ];then
+		J=$[$J+1]
+		echo -e "$J\t$U" >> /root/user.txt
+	fi
+done
+脚本练习：
+#！/bin/bash
+C=`du -a $1 | wc -l`
+for I in `seq $C`;do
+	FS=`du -a $1 | sort -nr | head -$I | tail -1 | awk '{print $1}'
+	FN=`du -a $1 | sort -nr | head -$I | tail -1 | awk '{print $2}'
+	# 判断是否为文件，过滤文件夹名
+	if [ -f $FN ];then
+		echo "The max file is $FN \t $FS"
+		break
+	fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

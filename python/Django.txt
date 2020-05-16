@@ -1,0 +1,633 @@
+创建项目
+    新建一个目录
+    打开cmd，cd到新建目录
+    输入django-admin startproject <name>,回车
+    回到新建目录，得到name目录
+    manage.py 一个命令行工具，用于和Django项目交互
+    __init__.py 一个空文件，告诉python这个目录是个python包
+    setting.py 项目的配置文件
+    urls.py 项目的URL声明
+    wsgi.py 项目与wsgi兼容的Web服务器入口
+基本操作
+    设计表结构
+        班级表结构
+            表名grade
+            字段
+                班级名称gname
+                成立时间gdate
+                女生总数ggirlnum
+                男生总数gboynum
+                是否删除isDelete
+        学生表结构
+            表名student
+            字段
+                姓名sname
+                性别sgender
+                年龄sage
+                简介scontend
+                删除isdelete
+    配置数据库
+        默认使用的sqlite3
+        python3.x中数据库包pymysql
+        在__init__.py中添加 import pymysql
+                            pymysql.install_as_MySQLdb()
+        在setting.py中的databases选项配置数据库
+            DATABASES = {
+                'default': {
+                                'ENGINE': 'django.db.backends.mysql',
+                                'NAME': "wyj",
+                                'USER': "root",
+                                'PASSWORD': 'wyj',
+                                'HOST': 'localhost',
+                                'PORT': '3306',
+                            }
+                        }
+    创建应用
+        一个项目可以创建多个应用，每个应用进行一种业务处理
+        cmd中进入新建目录下的project目录，即mydjango/project
+        输入python manage.py startapp <appname>回车，生成app目录
+        myApp目录说明
+                    admin.py 站点配置
+                    models.py 模型
+                    view.py 视图
+    激活应用
+        将myApp应用加入到setting.py中的INSTALLED_APPS设置项
+    定义模型
+        一个数据表对应一个模型
+        在models.py中定义模型，和数据库交互
+        引入from django.db import models，模型类要继承models.Model
+            class Grades(models.Model):
+                gname    = models.CharField(max_length=20)
+                gdate    = models.DateField()
+                ggirlnum = models.IntegerField()
+                gboynum  = models.IntegerField()
+                isDelete = models.BooleanField(default=False)
+            class Students(models.Model):
+                sname    = models.CharField(max_length=20)
+                sgender  = models.BooleanField(default=True)
+                sage     = models.IntegerField()
+                scontend = models.CharField(max_length=20)
+                isDelete = models.BooleanField(default=False)
+                # 关联外键
+                sgrade   = models.ForeignKey('Grades')
+    生成数据表
+        生成迁移文件
+            cmd中project目录下执行python manage.py makemigrations
+            在migrations目录下生成迁移文件，此时数据库中未生成数据表
+        执行迁移
+            执行python manage.py migrate
+            相当于执行sql语句生成相应的表，但表名加了应用名字
+        新加数据表可以直接生成迁移文件，在执行迁移
+        若要修改已存在表的字段、表名信息，建议删掉已存在迁移文件，数据表，重新生成
+    测试数据操作
+        执行python manage.py shell
+        引入包
+            from myApp.models import Grades,Students
+            from django.utils import timezone
+            from datetime import *
+        查询所有数据
+            Grades.objects.all()
+        添加数据
+            本质添加一个模型类的对象实例
+                >>> grade1          = Grades()
+                >>> grade1.gname    = 'wang'
+                >>> grade1.gdate    = datetime(year=2020, month=4, day=26)
+                >>> grade1.ggirlnum = 3
+                >>> grade1.gboynum  = 27
+                >>> grade1.save()
+        查看某条数据
+            Grades.objects.get(pk=<id 或其他条件>)
+        修改某条数据
+            grade1.gname = 'kong'
+            grade1.save()
+        删除某条数据
+            grade1.delete() 物理删除
+        获取关联对象的集合
+            grade1.students_set.all() 获取某班级所有学生集合
+        增加一条关联数据
+            stu = grade1.students_set.create(sname=u'孔莹', sgender=False,sage=18,scontend='最美')
+            不用.save()
+    启动服务器
+        python manage.py runserver ip:port
+        ip可以不写，默认本地，端口默认8000
+        这是一个轻量级服务器，仅在开发测试中使用
+    amdin站点管理
+        内容发布
+            负责增加、修改、删除内容
+        配置admin应用
+            setting.py中INSTALLED_APPS添加，默认添加
+        创建管理员用户
+            amd中执行 python manage.py createsuperuser
+            依次输入
+                用户名：wyj
+                邮箱：wyj@163.com
+                密码：wyj7603998
+            浏览器输入
+                http://127.0.0.1:8000/admin/ 进入管理员界面
+            管理页面汉化
+                setting.py中修改如下
+                    # LANGUAGE_CODE = 'en-us'
+                    LANGUAGE_CODE   = 'zh-Hans'
+                    # TIME_ZONE     = 'UTC'
+                    TIME_ZONE       = 'Asia/Shanghai'
+                重启服务器
+            管理数据表
+                修改admin.py如下
+                    from .models import Grades, Students
+                    admin.site.register(Grades)
+                    admin.site.register(Students)
+                    亦可用装饰器注册
+                        @admin.register(Students)
+            自定义管理页面
+                首页显示别名
+                    在models.py指定类下添加
+                        class Brands(models.Model):
+                        class Meta:
+                        verbose_name_plural = '品牌'  #单数不加s
+                        verbose_name = '品牌'  #复数不加s
+                列表页属性
+                    list_display  = []  # 要显示的字段
+                    list_filter   = []  # 过滤器
+                    list_per_page =     # 每页显示条数
+                    search_fields = []  # 搜索框
+                添加、修改页属性
+                    fields    =[]  # 显示的顺序
+                    fieldsets =[]  # 给添加页属性分组，如下：
+                        fieldsets = [
+                        ('base',{'fields':['gname', 'gdate', 'isDelete']}),
+                          ('num', {'fields':['ggirlnum', 'gboynum']})
+                                    ]
+                关联属性
+                    class StudentsInfo(admin.TabularInline): #StackedInline也可以，页面不同
+                        model = Students
+                        extra = 2
+                    class GradesAdmin(admin.ModelAdmin):
+                        inlines = [StudentsInfo]
+                布尔值显示问题
+                     def gender(self):
+                        if self.sgender:
+                            return '男'
+                        else:
+                            return '女'
+                     # 设置页面列的名称，不能用于增加页显示修改
+                     # 不能用于增加页显示修改，也可在models.py中通过verbose_name设置
+                     gender.short_description = '性别'
+                     # 指定方法作为排序依据
+                     gender.admin_order_field = 'sgender'
+                     def contend(self):
+                        return self.scontend
+                     contend.short_description = '简介'
+                     list_display = ['pk', 'sname', gender, 'sage',
+                        'sgrade', contend, 'isDelete']
+                执行动作位置
+                        actions_on_top    = False
+                        actions_on_bottom = True
+    视图的基本使用
+        在view.py中的一个python函数
+        定义视图
+            from django.http import HttpResponse
+            def index(request):
+                return HttpResponse('访问视图的页面')
+        配置url
+            project目录下的urls.py
+                urlpatterns = [
+                url(r'^admin/', admin.site.urls),
+                url(r'^', include('myApp.urls'))
+                ]
+            在myapp应用目录下新建urls.py
+                from django.conf.urls import url
+                from . import views
+                urlpatterns = [
+                url(r'^$', views.index),
+                ]
+        模板的使用
+            模板是HTML页面，根据视图传递的数据进行填充
+            创建模板，创建templates目录，在新建目录下创建对应项目模板目录
+            配置模板路径
+                修改setting.py中的template下的dir，如下
+                    'DIRS': [os.path.join(BASE_DIR, 'templates')]
+            定义grades.html和students.html模板
+                模板语法
+                    {{输出值，可以是变量，也可是对象属性}}
+                    {%执行代码段%}
+                写html模板
+                定义视图
+                写入urls.py
+模型扩展
+    字段类型
+        AutoField 主键
+        CharField 字符串
+        TextField 大文本字段，默认本文域
+        DateField 日期
+        TimeField 时间
+        DatetimeField 日期时间
+        FileField 文件
+        ImageField 图片
+    字段选项
+        null
+        blank
+        db_column='' 修改数据库中列的名称
+        unqiue 唯一值
+    关系
+        ForeignKey  一对多，将字段定义在多的端中
+        ManyToManyField 多对多，将字段定义在两端中
+        OneToOneField  一对一，将字段定义在任意一端中
+        用一访问多
+            对象.模型类小写_set
+            grade.students_set
+        访问id
+            student.sgrade_id
+    元选项
+        在模型类中定义Meta类，用于设置元信息
+        db_table=''  定义数据表名，默认为：应用名_模型类名
+        verbose_name_plural=''  自定义显示的类名，默认为：模型类名
+        ordering=[]  对象的默认排序字段，获取对象列表时使用，加-为降序，注意排序会增加数据库的开销
+    模型成员
+        类属性
+            objects 是Manager类的一个对象，用与数据库交互
+                    当定义模型时未指定管理器，Django为模型创建一个名为objects管理器
+                    可自定义管理器，obj=models.Manager(),此时objects失效
+            Manager()类  模型与数据库进行交互的接口，一个模型可有多个管理器
+                自定义可以向管理器中添加方法
+                修改管理器返回的原始查询集，常用重写get_queryset()方法
+        创建对象：向数据库中添加数据
+            方法一模型类中定义类方法，创建对象
+                @classmethod
+                def createObject(cls):
+            方法二管理器类中定义方法，创建对象
+    模型查询
+        查询集，从数据库获取的对象的集合
+        查询集可以有多个过滤器，过滤器就是一个函数，基于所给参数限制查询集结果
+        在管理器上调用过滤器返回查询集
+        查询集经过滤器返回新的查询集，所以可以写成链式调用
+        惰性执行，创建查询集不会带来任何数据的访问，直到调用数据时，才会访问数据
+        直接访问数据的情况
+            迭代
+            序列化
+            与if合用
+        返回查询集的方法称为过滤器
+            all()  返回查询集所有数据
+            filter()  返回符合条件的数据
+                filter(键=值，键=值)
+                filter(键=值).filter(键=值)
+            exclude()  过滤符合条件的数据
+            order_by()  排序
+            values()  返回一个列表，一个元素就是一个对象(字典)
+        返回单个数据
+            get()  返回一个满足条件的对象，若未找到符合条件对象，会引发：模型类DoesNotExist异常；若找到多条符合条件对象，报异常：MultipleObjectReturned
+            count()  返回查询集中对象的个数
+            first()  返回查询集中的第一个对象
+            last()  返回查询集中的最后一个对象
+            exist()  判断查询集是否有数据，有返回True
+        限制查询集
+            查询集返回列表，可用下标[0:5]，但下标不可为负数
+                如：studentsList=Students.objects.all()[0:9]
+        查询集缓存
+            每个查询集都包含一个缓存，来最小化对数据库的访问
+            在新建的查询集中，缓存首次为空，第一次对查询集求值，会发生缓存
+        字段查询
+            实现sql中where语句，作为方法filter(),exclude(),get()的参数
+            语法
+                属性名称__比较运算符 值
+                如：studentsList=Students.objects.filter(name__contain='w')
+            外键
+                属性名_id
+            转义
+                不同sql中的转义，无需转义
+        比较运算符
+            exact
+            contain  包含
+            startwith  以<>开头
+            endwith    以<>结尾
+            isnull、isnotnull  是否为空
+            in  是否包含在范围内
+            gt、gte、lt、lte
+            year，month，day,hour,minute,second  规定时间属性
+            跨关键查询
+                Grades.objects.filter(students__name__contain='w')
+                返回包含学生名字w的班级对象
+            查询快捷
+                pk代表主键
+        聚合函数
+            使用aggregate()函数返回聚合函数的值，需引入对应函数包
+            from django.db.models import Min
+            Avg，Count，Max，Min，Sum
+        F对象
+            可以使用模型的A属性和B属性比较
+            需引入from django.db.models import F,Q
+            如：g=Grades.objects.filter(girlnum__gt=F('boynum'))
+                返回女生数大于男生数的班级对象
+            F对象支持算数运算
+                如：g=Grades.objects.filter(girlnum__gt=F('boynum')+10)
+        Q对象
+            过滤器方法中的关键字参数
+                如：Students.objects.filter(Q(pk__lte=3)|Q(age__gt=19)) 实现或查询
+                如：Students.objects.filter(~Q(age__gt=19)) ~取反
+视图扩展
+    url正则匹配前加r,表示不转义
+    url的方向解析
+        硬解码链接
+    视图函数
+        参数
+            request，一个HTTPRequest的实例
+            其他参数，url正则表达式获取的匹配组作为参数
+    错误视图
+        404 找不到网页，url匹配不成功的错误
+                在templats目录下定义404.html
+                在setting.py配置DEBUG=True
+        500 在视图代码中出现错误（服务器代码错误）
+        400 错误出现在客户的操作中
+    HttpRequest对象
+        服务器接收http请求后，会根据报文创建 HttpRequest对象，由django创建
+        属性名
+            path  请求的完整路径（不包括域名和端口）
+            method  表示请求的方式，常用的get、post
+            encoding  表示浏览器提交数据的编码方式，一般为utf-8
+            GET 类似字典的对象，包含了get请求的所有参数
+            POST 类似字典的对象，包含了post请求的所有参数
+            FILES 类似字典的对象，包含了所有上传的文件
+            COOKIES 字典对象，包含左右cookies
+            session 类似字典的对象，表示当前会话
+        方法
+            is_ajax() 如果是通过XMLHttpRequest发起的，返回True
+            request对象，中的GET、POST都属于QueryDict对象，方法：
+                get() 根据键获取值，只能获取一个
+                getlist() 将键的值以列表返回，可获取键的多个值
+        Django的POST请求时因为开启防止csrf，报403错误，解决办法
+            1.关闭中间件中的csrf；
+            2.或者在相应视图前加 @csrf_exempt修饰器，需引入from django.views.decorators.csrf import csrf_exempt；
+            3.在模板表单中加{% csrf_taken %}，后端须使用render返回数据；
+            注意：1，2 方法会导致请求无法防止csrf攻击
+        HttpResponse对象
+        返回给浏览器的数据，由程序员创建
+        返回方法
+            不调用模板 HttpResponse
+            调用模板 常用方法render
+        属性
+            content
+            charset
+            status_code
+            content-type
+        方法
+            init  使用页面内容实例化HttpRespost对象
+            write(content)  以文本形式写入
+            flush()  以文本形式输出缓冲区
+            set_cookise(key,value)  
+            delete_cookies()  若cookies不存在，则什么都不做
+        子类 HttpResponseRedirct
+            重定向，实现服务器跳转
+                方法一：需引入子类 from django.http import HttpResponseRedirct
+                return HttpResponseRedirct('需定向的url')
+                方法二：需引入子类 from django.shortcuts import redirect
+                return redirect('需定向的url')
+        子类 JaonResponse
+            一般用于异步请求，返回json数据
+            data 字典对象
+    状态保持
+        http协议是无状态的，客户端与服务器的一次通信就是一次会话
+        实现状态的保持，在客户端或服务端存储有关会话的数据，存储方式
+            COOKIES 所有的数据都存在客户端，不要存敏感的数据，不安全、数据量小
+            session 所有的数据存在服务端，在客户端用cookies存session_id
+        状态保持的的目的，在一段时间内跟踪请求者的状态，实现跨页面访问当前请求者的数据
+        启用session
+            setting 中 installed_apps
+                       middleware 
+        使用session
+            启用session后，每个httprequest对象都有一个session属性，类似字典的对象
+            get
+            clear 删除当前session
+            flush 删除当前session并删除cookies
+        设置过期时间
+            若不设置，默认两周后过期
+                request.session.set_expiry(value)
+            整数 # 设置过期时间 10m 后过期
+                request.session.set_expiry(10)
+            0 关闭浏览器时失效
+            None 永不过期
+        存储session位置
+        使用redis缓存session
+模板扩展
+    遵守标识符规则
+    变量
+        {{ var }}  取变量的值，若引用的变量不存在，则插入的为空字符串
+    标签
+        {% tag %}  在输出中创建文本，控制逻辑或循环
+        if
+            {% if 表达式 %}
+                语句
+            {% endif %}
+        for
+            {% for i in list%}
+                语句
+                # 循环次数
+                {{forloop.counter}}
+            {% empty %}
+                # 列表为空，或列表不存在时执行
+                语句
+            {% endfor %}
+        conmment 
+            {% conmment %}
+                多行注释
+            {% endconmment %}
+        ifequel , ifnotequel 
+            同if，判断两个值等，或不等则执行语句
+        url 
+            反向解析
+            {% url 'namespace:name' agrs or var%}
+        include
+            加载模板并以标签内的参数渲染
+            {% include '模板目录' agrs %}
+        csrf_taken
+            用于跨站请求伪造保护
+            {% csrf_taken %}
+            恶意网站包含链接、表单、按钮、js利用登录用户在浏览器中认证，攻击服务
+        block ,extends
+            用于模板的继承
+        autoescape
+            用于html转义
+            将接受到的字符串当HTML标签语句渲染
+            {% autoscape off %}
+            {{str}}
+            {% endautoscape %}
+    过滤器
+        {{var|过滤器}}
+        在变量显示前修改，不修改原数据
+        过滤器可以传递参数，参数用引号引起来
+            {{list|join:'#'}}
+        若变量不存在，或值为 False,空，可以用默认值 default
+            {{var|default:'默认值'}}
+        根据给定格式转换日期为字符串
+            {{datevar|date:'y-m-d'}}
+        加减乘除
+            {{num|add:10}}  num+10
+            {{num|add:-10}}  num-10
+            {% widthratio num 1 5 %}  num/1*5
+        HTML转义 
+            {{str|safe}}
+            同autoscape标签
+    注释
+        单行注释
+            {# 注释内容 #}
+    模板继承
+        实现页面重复使用
+        block 在父模板中预留区域，子模板去填充
+            {% block 便签名%}
+            {% endblock 便签名%}
+        extends 继承模板，需写在模板文件第一行
+            {% extends '父模板路径' %}
+    验证码
+        在用户注册、登录页面使用，防止暴力请求，减轻服务器压力，也可防止csrf
+高级扩展
+    静态文件
+        css js Json文件 图片等
+    配置目录setting
+        STATIC_URL = '/static/'
+        STATICFILES_DIRS = [
+        os.path.join(BASE_DIR, 'static')
+        ]
+        html模板中加入
+            {% load static from staticfiles %}
+            <script type="text/javascript" src="{% static 'phone/js/login.js' %}"></script>
+    中间件
+        一个轻量级、底层的插件，可以介入Django的请求和响应，本质就时Python类。
+        方法
+            init 不需要传参数，服务器响应第一个请求时自动调用，用于确定是否启用该中间件
+            prosess_request(self, request) 
+                分配url匹配视图前调用，每个请求都会调用，返回None或HttpResponse对象
+            prosess_view(self, request, args, kwargs)
+                分配url匹配视图前调用，每个请求都会调用，返回None或HttpResponse对象
+            prosess_template_reponse(self,)
+                视图刚好执行完后调用，每个请求都会调用，返回None或HttpResponse对象
+            prosess_response(request, response)
+                所有响应返回浏览器前调用，每个请求都会调用，返回HttpResponse对象
+            prosess_exception(request, exception)
+                视图出现异常调用，返回HttpResponse对象
+        自定义中间件
+            工程目录下新建middleware/phone
+            新建.py，定义自己的类
+                from django.utils.deprecation import MiddlewareMixin
+                class MyMiddleware(MiddlewareMixin):
+                    def process_request(self, request):
+                    print("get参数为：", request.GET.get('a'))
+            setting中配置自定义的中间件
+    上传图片
+        文件上传时，文件数据存储在requestFILES属性中，必须用post请求
+        确定存储路径，一般在static下新建upfile目录
+        在setting中配置 MDEIA_ROOT = os.path.join(BASE_DIR, r'static\upfile')
+        写upfile页面，注意form表单
+            <form action="/savefile/" method="post" enctype="multipart/form-data"></form>
+    分页
+        Paginator 对象
+            Paginator(list, int) 返回一个分页对象
+            属性
+                count 对象总数
+                num_pages 页面总数
+                page_range 页码列表
+            方法
+                page(num) 获得一个Page对象
+            异常
+                InvalidPage page(num)当num为无效页码时
+                EmptyPage 页码存在，但页面没数据
+        Page 对象 
+            page(num) 返回获取
+            属性
+                object.list 当前页所有数据对象的列表
+                number 当前页码值
+                paginator 当前page关联的 Paginator对象
+            方法
+                has_next() 判断是否有下一页，有返回True
+                has_previous() 判断是否有上一页或下一页
+                has_other_pages() 判断是否有上一页或下一页
+                next_page_number() 返回下一页的页码
+                previous_page_number() 返回上一页页码
+                len() 当前页的数据对象个数
+    ajax 
+        ?
+        视图返回 JaonResponse() 传给模板json数据，模板用js展现数据
+    富文本
+        pip install django-tinymce
+        站点使用
+            配置setting文件，在INSTALLED_APPS中添加'tinymce'
+            再添加 TINYMCE_DEFAULT_CONFIG={
+                'theme':'advanced'
+                'width':600
+                'height':400
+            }
+        自定义视图中使用
+            主要用于写博客
+    celery
+        将耗时的操作放到 celery中执行，或定时执行某些操作
+        任务 task
+            本质是py函数
+        队列 queue
+            将要执行的任务放队列
+        工人 worker
+            负责执行队列中的任务
+        代理 broker
+            负责调度，在部署环境中使用redis
+        安装
+            注意redis版本和celery版本兼容问题
+            安装 redis
+            pip install celery
+            pip install celery-with-redis
+            pip install django-celery
+        配置setting.py
+            INSATALL_APPS 中加入 'djcelery'
+            # celery settings
+            import djcelery
+            # celery中间人 redis://redis服务所在的ip地址:端口/数据库号
+            BROKER_URL = "redis://localhost:6379/"
+            # celery结果返回，可用于跟踪结果
+            CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+            # celery内容等消息的格式设置
+            CELERY_ACCEPT_CONTENT = ['application/json', ]
+            CELERY_TASK_SERIALIZER = 'json'
+            CELERY_RESULT_SERIALIZER = 'json'
+            # celery时区设置，使用settings中TIME_ZONE同样的时区
+            CELERY_TIMEZONE = TIME_ZONE
+        执行迁移，生成celery需要的数据库，无需生成迁移文件
+        在工程目录下新建 celery.py
+            from __future__ import absolute_import, unicode_literals
+            from celery import Celery
+            from django.conf import settings
+            from os import path, environ
+            # 获取项目名称
+            project_name = path.split(path.dirname(__file__))[-1]
+            project_settings = "{}.settings".format(project_name)
+            # 设置环境变量
+            environ.setdefault("DJANGO_SETTINGS_MODULE", project_settings)
+            # 实例化Celery
+            app = Celery(project_name)
+            # 使用django的settings文件配置celery
+            app.config_from_object("django.conf:settings", namespace='CELERY')
+            # Celery加载所有注册的应用
+            app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+            @app.task(bind=True)
+            def debug_task(self):
+            print("Request: {0!r}".format(self.request))
+        在应用目录下新建 task.py
+            from __future__ import absolute_import, unicode_literals
+            import logging
+            from time import sleep
+            from celery import shared_task
+            logger = logging.getLogger(__name__)
+            @shared_task
+                def send_email(email):
+                print("start send email to %s" % email)
+                sleep(5) #休息5秒
+                print("success")
+                return True           
+            @shared_task
+                def add(x, y):
+                return x + y
+        配置urls.py和views.py
+
+
+
+
+
+
+
+
+
+

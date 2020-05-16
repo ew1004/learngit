@@ -1,0 +1,53 @@
+结构性标签：
+渐变色
+flex
+
+##########################
+移动终端<meta name="viewport" content = "width=device-width, initil-scale=1.0,maximum-scale=1.0,user-scalable=no " >
+	width：设置布局视口宽度为特定值
+	init-scale：设置页面初始缩放程度和宽度
+	minimum-scale：设置最小缩放程度
+	maximum-scale：设置最大缩放程度
+	user-scalable：是否阻止用户进行缩放
+##########################
+变形
+transform：scale(n)  缩放n倍
+transform：scale(n,m)  缩放水平n倍，垂直m倍
+transform：skew(n deg)  倾斜n deg（度）
+transform-origin：缩放基准点
+transform：translate()  移动
+3D效果
+	轴翻转
+	transform：rotateX(45deg)
+	transform：rotateY(45deg)
+	transform：rotateZ(45deg)  
+	transform:rotate3D(x,y,z,n deg)  各轴翻转n角度
+	轴移动
+	transform:translateX()
+	transform:translate3D()
+	轴倾斜
+	transform：skewX(n deg)
+	transform：skew3D(n deg)
+动画
+transition:property duration timing-function delay
+	property:表示对哪个属性操作
+	duration:表示多久时间内完成属性值得过度
+	timing-function:通过什么方法过度
+	delay:延迟多久开始执行
+animation
+	@keyframe name 关键帧｛
+		0%｛｝
+		10%｛｝
+		100%｛｝
+		或者
+		from｛｝
+		to{}
+	｝
+#############################
+触屏事件 绑定给指定元素
+touch.js
+touchstart
+touchmove
+touchend
+touchcancel
+touches

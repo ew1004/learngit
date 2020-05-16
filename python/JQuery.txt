@@ -1,0 +1,58 @@
+html
+text
+attr
+val
+css
+addClass
+removeClass
+append
+after
+replaceWith
+each
+#################
+事件绑定
+	bind：多用于id选择器，隐式迭代
+	delegate | on：动态添加的元素绑定，但DOM树不宜太深
+	on ：常用
+	one：一次性事件
+事件解除绑定
+	unbind
+	undelegate
+	off
+模拟用户点击
+	trigger
+	hover：鼠标移入移出
+事件冒泡
+	return false ：阻止冒泡和默认行为
+	e.stopPropagation()：阻止冒泡
+	e.preventDefault() ：阻止默认行为
+####################
+动画效果
+	slow 600ms,normal 400ms,fast 200ms
+	hide()：隐藏
+	show()：显示
+	toggle()：切换显示隐藏
+	fadein()：淡入
+	fadeout()：淡出
+	fadeToggle()：切换状态
+	fadeTo()：淡到某透明度
+	slideup()：向上收起
+	slideToggle()：切换收起
+自定义动画
+animate()：创建动画
+	例：$("#div").animate({left:"200px"},speed,callback)
+动画停止
+stop(clearQueue,gotoEnd)
+判断动画是否在执行
+if($("#div").is(":animated")){}
+########################
+网络请求
+$ajax({
+	type:"post",
+	url:"http://.....",
+	data:{a:1,b:2},
+	dataType:"json",
+	success:function(data,textStatus){
+	//成功后做的事情
+	}
+})

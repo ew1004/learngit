@@ -1,0 +1,10 @@
+虚拟网卡
+	如果安装了最新的无线网卡驱动，在设备管里器并没有出现Microsoft Virtual WiFi Miniport dapter此项，也请按以下命令操作即可让它陈现在你面前）；
+	以管理员权限打开命令行窗口(开始->附件->命令行提示符，右键以管理员权限打开)
+		输入：netsh wlan set hostednetwork mode=allow ssid=Windows7AP key=password（ssid和password根据个人喜好自定）
+		启动Adapter，输入：netsh wlan start hostednetwork
+		关闭Adapter，输入：netsh wlan start hostednetwork mode=disallow
+网卡重启
+	netsh winsock reset（解决连上wifi却连不上网）
+注册表管理器
+	regedit

@@ -1,0 +1,32 @@
+git init 初始化一个仓库
+git add <file> 可反复多次使用，添加多个文件
+git commit -m "message" 提交，并加入提交说明-m
+git status 查看仓库当前状态，HEAD指向当前版本
+git diff 查看修改内容
+git log 查看修改日志
+git reset --hard HEAD^<n> 回退到上一个<n>个版本
+git reset --hard commit_id 指定到命令号版本位置
+git reflog 查看命令记录
+git checkout -- filename  撤销回到最后一次git commit或git add的状态
+# 关联远程库
+ssh-keygen -t rsa -C "18331991616@163.com"  
+cd /c/users/mango/.ssh 目录下生成id_rsa 私钥和 id_rsa.pub 公钥
+将公钥内容复制到github网站setting中SSH
+ssh -T git@github.com 测试密钥是否通过
+git remote add origin git@github.com:ew1004/repository-name 绑定远程仓库
+git remote rm orgin 删除关联
+git push -u origin master 第一次推送master分支的所有内容
+git push origin master 后续推送新内容
+git clone git@github.com:ew1004/repository-name  克隆到本地
+.gitignore  忽略上传文件的名字
+克隆只是克隆远程库的master分支，需要在本地git branch -b wyj分支后，再git pull origin wyj 即可得到远程wyj分支内容
+git tag 查看标签
+git tag name 添加标签
+git tag name commit_id 给指定命令id打标签
+git checkout tagname 切换指定标签
+git tag -d name 删除标签
+git push origin name 推送标签到远程
+git push origin --tags 一次性推送所有本地标签
+删除远程标签
+	先从本地删除标签
+	再git push origin :refs/tags/标签名

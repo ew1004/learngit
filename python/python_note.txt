@@ -1,0 +1,279 @@
+﻿####常用命令：
+is    #判断id是否同
+==    #判断value是否等
+len（）   #字符串长度
+"姓名:{0},年龄：{1}｝".format("王亚举","18")
+
+####import turtle
+turtle.color("green")    #换色
+turtle.penup()    #抬笔
+turtle.pendown()    #落笔
+turtle.goto(x,y)    #去坐标(x,y）
+turtle.forward(x)    #前进x像素
+turtle.circle(x)    #逆时针画半径为x的圆
+turtle.left(x)    #左转x度
+turtle.width(x)    #笔宽x
+
+####import time
+time.time()    #获取现在时间，秒数
+
+####import io
+a=io.StringIO(b)   #新的字符串a可变
+a.seek()    #定位
+a.write()    #写入
+
+####列表
+任意元素的序列[1,2,3,4,5，'a',True,"王"]
+列表创建：
+        list()
+        range(start,end,step)    #-step,倒数
+        推导式，如：a=[x*3 for x in range(4)]
+列表元素添加：
+    append()    #尾部直接添加
+    +运算符    #产生新的对象
+    extend()    #产新
+    insert(x,y)    #x位置插入数据y，大量数据移动
+列表元素删除：
+    del a[2]    #删除制定位置元素
+    a.pop()    #删除并返回指定位置元素，默认最后一位
+列表元素方位：
+    a.index(a1,x,y)    #在范围xy中找a1首次出现位置
+    a.count(a1)    #a1出现次数
+    in  / not in
+列表切片：
+    a[start:end:step]    #包头不包尾
+列表排序：
+    a.sort()    #升序
+    a.sort(reverse=True)    #降序
+    import random
+    random.shuffle(a)    #随机顺序
+    a.sorted()   #产生新的列表地址
+    reversed(a)    #逆序，返回迭代器对象，只可被用一次
+多维列表：
+    a[[a1,a2,a3],[b1,b2,b3]]
+    a.__next__()    #下一个
+
+元组同列表，但元组不可变，同时列表不能作为字典的键
+
+####字典
+创建
+    a={'key1':'value1','key2':'value2'}
+    b=dict(key='value',key1='value')
+    c=dict(zip([key,key1],[value,value1]))
+    d=dict.fromkeys([key,key1])    #值为空的字典
+访问
+    a[key]    #没有该键，报错
+    a.get(key)    #没有改键，返回none
+    a.item()    #列出所有键值对
+    a.keys()    #列出所有键
+    a.values()    #列出所有值
+    len()   in
+编辑
+    a['key']='value'    #有则覆盖，无则添加
+    a.update(b)    #b加到a中
+    del(a[key])
+    clear(a)
+    a.pop(key)
+
+####解包
+    （a,b,c）=(1,2,3)
+     [1,b,c）=(1,2,3]
+
+    {'key1':'value1','key2':'value2'}
+    key1,key2=s    #默认对键解包   
+    key1,key2=s.items()    #默认对键值对解包
+    key1,key2=s.values()    #默认对值解包
+####集合
+    a={key,key1}
+    a.add(key3)    #集合添加
+    a.remove(key)    #集合删除
+
+####控制语句
+条件if
+    elif
+    else
+    
+循环：while:
+      for
+    
+####推导式创建序列，列表，字典，集合，##元素只能建成生成器，即可迭代对象，只可被用一次
+
+####函数
+    def 函数名（参数）:
+        语句块
+    函数也是对象
+    return 返回值
+    eval（）
+####全局变量和局部变量
+    global a #如果要在函数内改变全局变量的值，增加global关键字声明
+    nonloacl a    #声明外部函数的局部变量
+    浅拷贝：不拷贝子对象的内容，只是拷贝子对象的引用。
+深拷贝：会连子对象的内存也全部拷贝一份，对子对象的修改不会影响源对象
+    lanmbda  #匿名函数
+    函数递归，分形几何图
+    函数嵌套，封装、闭包
+
+####面向过程和面向对象
+    面向过程适合小规模程序
+    面向对象大规模的
+####类：类名首字母大写，驼峰原则
+    class Abc：
+	w=wang   #类属性
+        def __init__(self,a,b)    #__init__()构造方法
+        self.a=a     #实例属性
+        self.b=b
+        def ab():    #实例方法
+	@classmethod    #类方法首行，类方法引用实例属性，实例方法报错
+	def abc(cls ,a,b,c)    #cls类对象本身，必须首个
+	@staticmethod    #静态方法，与类对象无关的方法，同普通函数，只是放到了类的名字空间里
+	def aaa(a,a,a)
+	
+	__del__析构函数
+	__call__
+	方法没有重载，方法可以修改或添加
+	私有属性__   访问：_类名__属性
+	@property    #相当于getter
+	@实例属性.setter    #相当于setter
+####对象的封装，继承，重写，
+	封装：私有属性
+	继承：子类，父类，子类继承父类所有属性和方法，但私有属性和方法不能直接调用
+	多重继承，子类具备多个父类特点，层次复杂，少用
+	重写：__str__() 多用于返回一个关于“对象的描述”，常用于print（）帮助查看对象信息
+	mro():method resolution order,方法解析顺序按类的层次结构寻找
+	super（）.父类方法.()=父类.父类方法.()
+	多态：多态是方法的多态，继承后，方法的重写
+	特殊方法和运算符，可重载，但一般没必要
+        特殊属性：
+		
+	is_a  继承
+	has-a  组合实现继承
+####设计模式
+	工厂模式：
+	单例模式：只有一个实例，需重写new
+####################################################
+####异常：exception
+	traceback:追溯
+	try:
+		被监控语句块
+	except BaseException [as e]:
+		异常处理语句块
+	多个except 结构时，先子类，后父类
+	else:没有异常执行
+	finally:有没有异常都执行
+常见异常：
+	SyntaxError：语法错误
+	NameError：尝试访问一个没有申明的变量
+	ZeroDivisionError:除数为零
+	ValueError：数值错误
+	TypeError：类型错误
+	AttributeError:访问对象的不存在的属性
+	IndexError：索引越界异常
+	KeyError：字典的关键字不存在
+with 上下文管理：
+	with context_expr(语句块） [as var]
+traceback:
+	import tarckback
+	trackback.print_exc（）#打印异常信息
+	with open("d:/wyj.txt","a") as f
+		trackback.print_exc(file=f)  #输出到文件
+自定义异常类：
+class AgeError(Exception):	#继承Exception
+	def __init__(self, errorInfo):
+		Exception.__init__(self)
+		self.errorInfo=errorInfo
+	def __str__(self):
+		return str(errorInfo)+"年龄错误"
+	后续用raise抛出
+####文件处理：
+	文本文件：字符文本默认为unicode字符集，记事本打开
+	二进制文件：字节存储，无法用记事本打开，有音频，图片，doc等
+	文件处理包：io，os，xml，csv等。。。
+创建文件对象：open（）
+	f=open(r"d:\wyj.txt","w"）
+乱码：windows默认编码GBK,Linux默认编码utf-8
+	f=open(r"d:\wyj.txt","w"，encoding="utf-8")
+write(a):写入字符
+writelines(b):把字符串列表写入文件中，不添加换行符
+read(size):从文件中读取size个字符
+readline（）：读取一行返回结果，文件末尾返回空字符
+readlines（）：把文本文件中每一行都作为独立的字符串对象，并将这些对象放入列表返回
+name：文件名字
+tell():当前光标位置，字节，一个汉子三个字节
+seek（a,b）:光标位移a个字节
+truncate（size）：删除光标后的size个字符
+flush（）：缓冲区内容写进文件，不关闭
+close（）：缓冲区内容写进，并关闭
+
+####pickle：序列化
+	pickle.dump(obj,file)    #将obj对象序列化，存到file
+	pickle.load（file）    #从file中读取数据，反序列化成对象
+
+####csv文件：逗号分隔符文本文件，常用数据交换，Excel、数据库导入导出
+	csv.reader(f)
+	csv.writer(a)    #写入一行（列表）
+	csv.writers(a)    #写入多行
+
+####os 文件和目录操作
+	os.system("系统命令")
+	os.startfile(r"目录")    #打开指定exe
+
+import os.path    #路径判断，切割，组合，遍历  等效：from os import path
+import shutile    #文件移动，复制（可选择复制）
+import zipfile    #压缩解压文件
+import os         #print(os.getcwd())  #获得当前目录
+		  # os.chdir("d:")    #设为当前目录
+		  # os.mkdir("王")    #新建目录
+		  # os.rmdir("王")    #相对当前的工作目录，必须是空目录
+		  # os.makedirs("../照片/王")    #../ 当前目录的上一级目录
+		  # os.removedirs("../照片/王")
+
+####import 和 from   import   
+	模块，包
+	python setup.py sdist    #本地模块打包
+	python setup.py install  #本地模块安装
+	python setup.py sdist upload   #本地模块上传到pypi
+	pip install package_name
+	pip install package_name update
+
+####GUI编程
+	Tk()    #主窗体
+	Label   #标签
+	Button  #按钮
+	entry   #单行文本
+	text    #多行文本框
+	Tags    #复杂样式编辑
+	Radiobutton    #单选按钮
+	Checkbutton    #复选按钮
+	canvas    #画布组件
+
+####布局管理器
+	grid
+	pack
+	place     #组件.pack() 后不能再用，变量=组件，变量.pack（）可继续引用变量
+
+####事件
+	鼠标
+	键盘
+	属性
+    事件绑定
+	command=函数名
+	command=lambda:(函数（参数）)    #有参数的函数不可直接用
+	组件.bind（"事件",函数）
+
+####其他组件
+	OptionMenu    #选项
+	Scale    #滑块
+	askcolar   #from tikinter.colorchooser import *
+	askopenfile()    #文件对话框，from tkinter.filedialog import *
+	askstring()    #简单输入框，from tikinter.simpledialog import *
+	askokcancel()    #通用消息框，from tikinter.messagebox import *
+
+	菜单和快捷菜单：创建菜单
+			绑定右击事件
+
+####pygame, 见坦克大战
+		
+####pyinstaller -F -w --icon=img.jpg main.py 封装成exe
+
+
+
